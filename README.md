@@ -24,6 +24,20 @@
 
 腳本產生不納入 Git 的 `.env` 與隨機密鑰。Compose 包含 Neo4j **5.26.31 + GDS 2.13.12**、Ollama、模型初始化、Jaeger **2.21.0**、OTel Collector、Prometheus 與編譯成 Native AOT 的 API。初次部署需要下載容器和模型。預設模型是 `llama3.2:3b` 與 `nomic-embed-text`。
 
+若本機已有 Ollama 模型，可用唯讀掛載避免重新下載；以下範例搭配專案下載的 ONNX INT8 embedding 模型：
+
+```powershell
+$env:OLLAMA_HOST_MODELS = ($env:USERPROFILE -replace '\\', '/') + '/.ollama/models'
+$env:AI_PROVIDER = 'ollama'
+$env:CHAT_MODEL = 'qwen2.5-coder:7b' # 改成 ollama list 中實際存在的模型
+$env:EMBEDDING_PROVIDER = 'onnx'
+docker compose -f docker-compose.yml -f deploy/compose.cached-models.yml --env-file .env up --build -d --wait
+$env:APP_API_KEY = ((Get-Content .env | Where-Object { $_ -match '^APP_API_KEY=' }) -split '=', 2)[1]
+node scripts/smoke-compose.mjs
+```
+
+`scripts/smoke-compose.mjs` 會在真實容器中匯入合成文件、執行 Leiden 社群、產生並審查全域回答，並檢查 HTTP MCP 工具發現；CPU 模型第一次載入與產生摘要可能花數分鐘。驗證結果寫入 `artifacts/docker-live-smoke.json`，過程中寫入 `.partial.json`；模型權重與密鑰不會納入 Git。
+
 | 入口 | 位址 |
 |---|---|
 | API / OpenAPI | http://localhost:8080/openapi.json |

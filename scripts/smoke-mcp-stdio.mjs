@@ -2,7 +2,7 @@ import { spawn } from 'node:child_process';
 import { createInterface } from 'node:readline';
 import fs from 'node:fs/promises';
 
-const dotnet = process.env.DOTNET_EXE ?? '.runtime/dotnet/dotnet.exe';
+const dotnet = process.env.DOTNET_EXE ?? (process.platform === 'win32' ? '.runtime/dotnet/dotnet.exe' : 'dotnet');
 const dll = process.env.CLI_DLL ?? 'src/GraphRag.Cli/bin/Debug/net10.0/GraphRag.Cli.dll';
 const child = spawn(dotnet, [dll, 'mcp', '--fixture'], { stdio: ['pipe', 'pipe', 'pipe'], windowsHide: true });
 const pending = new Map();

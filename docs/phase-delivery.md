@@ -7,7 +7,7 @@
 | 1：第 1–5 天 | `IChatClient`、`IEmbeddingGenerator` DI；Azure/Ollama/ONNX adapters；Native AOT API | 真正 Linux AOT 編譯与 HTTP；真正 INT8 ONNX embeddings；REST routing/usage/JSON 契約 | Azure 需有效 endpoint/部署/密鑰；ONNX GenAI chat 需完整相容 checkpoint |
 | 2：第 6–12 天 | SK entities/relations；Neo4j HTTP transactions；GDS Leiden gamma/theta/seed；多層摘要；TensorPrimitives | 真正 GDS 2.13.12 產生 2 層 5 社群；Release SIMD 4.78–5.64×，kernel 0 managed bytes | fixture 圖只用於離線測試，明確稱為 connected-components，不冒稱 Leiden |
 | 3：第 13–20 天 | 真正 MAF workflow；Researcher/Generator/Critic；反思標記；固定重試與拒答；MCP 發現/search | fixture 模型驅動真實 MAF；citation/retry/cancel；官方 SDK HTTP external-search 整合測試 | 反思是提示式判斷，沒有訓練 Self-RAG checkpoint；live MCP search 需外部 MCP endpoint |
-| 4：第 21–28 天 | bounded Channel.Wait 攝取/串流；OpenInference.NET；Activity/Meter；OTLP；四項 C# 評估 | 27+ 項測試覆蓋背壓、取消、token usage、不記錄 prompt；Native HTTP/SSE/16 並發；真實 LLM pilot 可重跑 | 16 並發是工程 smoke，不是大量實際 LLM 請求的吞吐基準；合成小樣本不能證明普遍優越 |
+| 4：第 21–28 天 | bounded Channel.Wait 攝取/串流；OpenInference.NET；Activity/Meter；OTLP；四項 C# 評估 | 30 項測試覆蓋背壓、取消、token usage、不記錄 prompt；Native HTTP/SSE/16 並發；真實 LLM pilot 可重跑 | 16 並發是工程 smoke，不是大量實際 LLM 請求的吞吐基準；合成小樣本不能證明普遍優越 |
 | 5：第 29–30 天 | Dockerfiles；完整 Compose；README measured tables；GitHub CI/GHCR release | Compose parser config 驗證；可執行 Linux Native AOT artifact；測量 JSON 保留 | Docker engine 健康和完整容器部署需實測；GitHub push 需明確 repository URL |
 
 ## API 與論文對應

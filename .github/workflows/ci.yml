@@ -10,13 +10,13 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 10.0.401
           cache: true
           cache-dependency-path: '**/packages.lock.json'
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
       - name: Native toolchain
@@ -30,7 +30,7 @@ jobs:
         run: |
           dotnet run --project src/GraphRag.Cli -c Release --no-restore -- smoke --output artifacts/smoke.json
           dotnet run --project src/GraphRag.Cli -c Release --no-build -- benchmark --output artifacts/vector-benchmark.json
-          CLI_DLL=src/GraphRag.Cli/bin/Release/net10.0/GraphRag.Cli.dll node scripts/smoke-mcp-stdio.mjs
+          DOTNET_EXE=dotnet CLI_DLL=src/GraphRag.Cli/bin/Release/net10.0/GraphRag.Cli.dll node scripts/smoke-mcp-stdio.mjs
       - name: Compile and exercise real Native AOT binary
         run: |
           dotnet restore src/GraphRag.Api -r linux-x64 -p:PublishAot=true --locked-mode
@@ -41,7 +41,7 @@ jobs:
           NEO4J_PASSWORD: ci-test-password
           APP_API_KEY: ci-test-api-key
         run: docker compose config --quiet
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: validation-evidence
@@ -49,7 +49,7 @@ jobs:
             artifacts/*.json
             artifacts/test-results/*.trx
             artifacts/logs/*.log
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: native-linux-x64
           path: artifacts/native/linux-x64/
