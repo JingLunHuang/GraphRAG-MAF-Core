@@ -1,0 +1,47 @@
+{
+  "artifactType": "measured-vector-kernel-benchmark",
+  "createdUtc": "2026-09-29T12:12:10.4717804+00:00",
+  "os": "Microsoft Windows 10.0.26200",
+  "runtime": ".NET 10.0.12",
+  "processorCount": 28,
+  "vectorHardwareAccelerated": true,
+  "buildConfiguration": "Release",
+  "measurements": [
+    {
+      "dimensions": 128,
+      "iterations": 200000,
+      "scalarNs": 54.6085,
+      "tensorNs": 10.380999999999998,
+      "speedup": 5.260427704460072,
+      "tensorAllocatedBytes": 0,
+      "absoluteError": 5.9604645E-08
+    },
+    {
+      "dimensions": 384,
+      "iterations": 200000,
+      "scalarNs": 165.7975,
+      "tensorNs": 29.4205,
+      "speedup": 5.635441273941639,
+      "tensorAllocatedBytes": 0,
+      "absoluteError": 2.3283064E-09
+    },
+    {
+      "dimensions": 768,
+      "iterations": 200000,
+      "scalarNs": 329.6965,
+      "tensorNs": 65.672,
+      "speedup": 5.020351138993788,
+      "tensorAllocatedBytes": 0,
+      "absoluteError": 7.450581E-09
+    },
+    {
+      "dimensions": 1536,
+      "iterations": 200000,
+      "scalarNs": 662.8115,
+      "tensorNs": 138.6565,
+      "speedup": 4.780241099407529,
+      "tensorAllocatedBytes": 0,
+      "absoluteError": 3.7252903E-09
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "openapi":"3.0.3",
+  "info":{"title":"GraphRAG-MAF-Core","version":"1.0.0","description":"Provider-independent hierarchical GraphRAG, MAF critic workflow, and MCP tools. Fixture mode verifies engineering only."},
+  "servers":[{"url":"http://localhost:8080"}],
+  "security":[{"apiKey":[]}],
+  "paths":{
+    "/health/live":{"get":{"security":[],"responses":{"200":{"description":"Process liveness and Native AOT status."}}}},
+    "/health/ready":{"get":{"security":[],"responses":{"200":{"description":"Graph index initialized."},"503":{"description":"Initializing."}}}},
+    "/api/v1/documents":{"post":{"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/Document"}}}},"responses":{"200":{"description":"Ingestion counts."},"400":{"description":"Invalid document."}}}},
+    "/api/v1/communities":{"post":{"requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{"gamma":{"type":"number","default":1},"theta":{"type":"number","default":0.01},"maxLevels":{"type":"integer","default":10},"randomSeed":{"type":"integer","default":19}}}}}},"responses":{"200":{"description":"Hierarchical Leiden community counts."}}}},
+    "/api/v1/query":{"post":{"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/Query"}}}},"responses":{"200":{"description":"Answer, evidence, citations, critic labels, retries, fallback and trace ID."},"400":{"description":"Invalid query."},"503":{"description":"Index or upstream unavailable."}}}},
+    "/api/v1/query/stream":{"post":{"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/Query"}}}},"responses":{"200":{"description":"SSE: retrieval, fallback, agent_delta, agent_complete, correction, result, error.","content":{"text/event-stream":{"schema":{"type":"string"}}}}}}},
+    "/mcp":{"post":{"description":"Official MCP C# SDK Streamable HTTP endpoint. Tools: rag_query, rag_ingest, rag_build_communities.","responses":{"200":{"description":"MCP JSON-RPC response."}}}}
+  },
+  "components":{
+    "securitySchemes":{"apiKey":{"type":"apiKey","in":"header","name":"X-API-Key"}},
+    "schemas":{
+      "Document":{"type":"object","required":["source","text"],"properties":{"source":{"type":"string","maxLength":2048},"text":{"type":"string","maxLength":1000000}}},
+      "Query":{"type":"object","required":["question"],"properties":{"question":{"type":"string","maxLength":8000},"mode":{"type":"string","enum":["local","global","naive"],"default":"local"},"topK":{"type":"integer","minimum":1,"maximum":50,"default":5},"hops":{"type":"integer","minimum":0,"maximum":3,"default":2}}}
+    }
+  }
+}

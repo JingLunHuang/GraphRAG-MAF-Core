@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/GraphRag.Core/GraphRag.Core.csproj" />
+    <Project Path="src/GraphRag.Infrastructure/GraphRag.Infrastructure.csproj" />
+    <Project Path="src/GraphRag.Api/GraphRag.Api.csproj" />
+    <Project Path="src/GraphRag.Cli/GraphRag.Cli.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/GraphRag.Tests/GraphRag.Tests.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,80 @@
+{
+  "artifactType": "measured-fresh-process-startup",
+  "environment": "Ubuntu 24.04 / WSL2; warm filesystem cache; fixture provider; no model weights loaded",
+  "runtimeFilesystem": "Linux filesystem",
+  "measurement": "parent process launch to HTTP readiness; RSS at readiness",
+  "runs": [
+    {
+      "scenario": "native-aot",
+      "iteration": 1,
+      "readinessMs": 39.087079000069025,
+      "rssMiB": 51.76171875
+    },
+    {
+      "scenario": "native-aot",
+      "iteration": 2,
+      "readinessMs": 30.51273799997034,
+      "rssMiB": 51.875
+    },
+    {
+      "scenario": "native-aot",
+      "iteration": 3,
+      "readinessMs": 30.413043000066864,
+      "rssMiB": 51.5625
+    },
+    {
+      "scenario": "native-aot",
+      "iteration": 4,
+      "readinessMs": 30.52907700009655,
+      "rssMiB": 51.46875
+    },
+    {
+      "scenario": "native-aot",
+      "iteration": 5,
+      "readinessMs": 30.44774900001812,
+      "rssMiB": 51.46484375
+    },
+    {
+      "scenario": "jit",
+      "iteration": 1,
+      "readinessMs": 217.40085800001907,
+      "rssMiB": 76.70703125
+    },
+    {
+      "scenario": "jit",
+      "iteration": 2,
+      "readinessMs": 212.92930499998874,
+      "rssMiB": 76.97265625
+    },
+    {
+      "scenario": "jit",
+      "iteration": 3,
+      "readinessMs": 230.938783000056,
+      "rssMiB": 76.84765625
+    },
+    {
+      "scenario": "jit",
+      "iteration": 4,
+      "readinessMs": 228.71007499998086,
+      "rssMiB": 76.6171875
+    },
+    {
+      "scenario": "jit",
+      "iteration": 5,
+      "readinessMs": 221.027266999954,
+      "rssMiB": 76.6328125
+    }
+  ],
+  "medians": [
+    {
+      "scenario": "native-aot",
+      "readinessMs": 30.51273799997034,
+      "rssMiB": 51.5625
+    },
+    {
+      "scenario": "jit",
+      "readinessMs": 221.027266999954,
+      "rssMiB": 76.70703125
+    }
+  ]
+}

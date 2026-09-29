@@ -1,0 +1,10 @@
+[
+  {"id":"local-01","question":"Which organization sells Orion?","reference":"Northwind sells Orion analytics services to enterprise customers.","graphMode":"local"},
+  {"id":"local-02","question":"What platform does Contoso use for audit evidence?","reference":"Contoso uses Helios to track audit evidence.","graphMode":"local"},
+  {"id":"multi-hop-01","question":"How can Fabrikam maintenance affect Orion releases?","reference":"Fabrikam is the single storage provider for Helios. Maintenance can make Helios unavailable. Contoso uses Helios for evidence, so an outage delays compliance reviews and can block Orion releases.","graphMode":"local"},
+  {"id":"multi-hop-02","question":"Who must Northwind coordinate with before Orion expands into Taiwan?","reference":"Northwind must coordinate the Helios recovery exercise with Contoso and Fabrikam. Contoso requires the exercise before approving Orion expansion.","graphMode":"local"},
+  {"id":"global-01","question":"What are the shared strategic priorities across the corpus?","reference":"The shared priorities are Orion reliability, Taiwan expansion, compliance readiness, and Helios recovery. Northwind funds reliability and expansion; Contoso gates expansion on a recovery exercise; Fabrikam availability is a dependency.","graphMode":"global"},
+  {"id":"global-02","question":"What common operational risk could block the Taiwan expansion strategy?","reference":"Helios depends on the single storage provider Fabrikam. Its unavailability can delay Contoso compliance reviews and block Orion releases. Contoso also requires a Helios recovery exercise before approving the expansion.","graphMode":"global"},
+  {"id":"grounding-01","question":"Has a second storage provider for Helios been approved?","reference":"A second provider is proposed but has not been approved.","graphMode":"local"},
+  {"id":"grounding-02","question":"What precise revenue will Orion generate in Taiwan in 2027?","reference":"The documents contain no precise revenue forecast; the answer should state that the evidence is insufficient.","graphMode":"local"}
+]

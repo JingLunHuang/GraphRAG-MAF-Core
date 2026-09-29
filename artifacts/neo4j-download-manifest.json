@@ -1,0 +1,6 @@
+﻿{
+    "Neo4jVersion":  "5.26.31",
+    "Neo4jSha256":  "f8fc23340561405f1ff10ca6ac2d317d095d3c74509a616883c45d7a61f5cfec",
+    "GdsVersion":  "2.13.12",
+    "GdsArchiveSha256":  "d24af9cfe8890dcb1556766aba6c25ac77515f1205da20baabb6eb40088950f9"
+}

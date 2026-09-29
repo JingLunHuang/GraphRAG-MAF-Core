@@ -1,0 +1,17 @@
+.runtime/
+.nuget/
+**/bin/
+**/obj/
+.env
+.env.*
+!.env.example
+models/*
+!models/README.md
+artifacts/native/
+artifacts/jit/
+artifacts/test-results/
+artifacts/logs/
+*.user
+*.suo
+.vs/
+TestResults/

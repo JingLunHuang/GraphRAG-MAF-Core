@@ -1,0 +1,53 @@
+name: Validate and compile Native AOT
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test-and-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.401
+          cache: true
+          cache-dependency-path: '**/packages.lock.json'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Native toolchain
+        run: sudo apt-get update && sudo apt-get install -y clang zlib1g-dev
+      - name: Locked restore and tests
+        run: |
+          dotnet restore GraphRag.slnx --locked-mode
+          dotnet test tests/GraphRag.Tests -c Release --no-restore --logger 'trx;LogFileName=unit-tests.trx' --results-directory artifacts/test-results
+      - name: API, CLI and stdio MCP
+        run: |
+          dotnet run --project src/GraphRag.Cli -c Release --no-restore -- smoke --output artifacts/smoke.json
+          dotnet run --project src/GraphRag.Cli -c Release --no-build -- benchmark --output artifacts/vector-benchmark.json
+          CLI_DLL=src/GraphRag.Cli/bin/Release/net10.0/GraphRag.Cli.dll node scripts/smoke-mcp-stdio.mjs
+      - name: Compile and exercise real Native AOT binary
+        run: |
+          dotnet publish src/GraphRag.Api -c Release -r linux-x64 -p:PublishAot=true -p:TrimmerSingleWarn=false -o artifacts/native/linux-x64
+          bash scripts/ci-native-smoke.sh
+      - name: Compose validation
+        env:
+          NEO4J_PASSWORD: ci-test-password
+          APP_API_KEY: ci-test-api-key
+        run: docker compose config --quiet
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: validation-evidence
+          path: |
+            artifacts/*.json
+            artifacts/test-results/*.trx
+            artifacts/logs/*.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-linux-x64
+          path: artifacts/native/linux-x64/

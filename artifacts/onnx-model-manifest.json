@@ -1,0 +1,8 @@
+﻿{
+    "Repository":  "sentence-transformers/all-MiniLM-L6-v2",
+    "Commit":  "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "Format":  "ONNX INT8",
+    "ModelSha256":  "4278337fd0ff3c68bfb6291042cad8ab363e1d9fbc43dcb499fe91c871902474",
+    "VocabSha256":  "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3",
+    "License":  "Apache-2.0"
+}

@@ -1,0 +1,199 @@
+{
+  "status": "passed-fixture-workflow",
+  "ingestion": [
+    {
+      "documentId": "doc-934c56e176c7996380688f1e",
+      "chunks": 1,
+      "entities": 4,
+      "relations": 3
+    },
+    {
+      "documentId": "doc-55933d15beb8cb706df05412",
+      "chunks": 1,
+      "entities": 3,
+      "relations": 2
+    },
+    {
+      "documentId": "doc-028f3355f42924043f643c9b",
+      "chunks": 1,
+      "entities": 3,
+      "relations": 2
+    },
+    {
+      "documentId": "doc-8808b6306914858add5610f7",
+      "chunks": 1,
+      "entities": 6,
+      "relations": 5
+    }
+  ],
+  "communities": {
+    "communities": 1,
+    "levels": 1,
+    "gamma": 1,
+    "theta": 0.01,
+    "algorithm": "fixture-connected-components (not Leiden)"
+  },
+  "local": {
+    "question": "How do Northwind and Contoso depend on Orion and Helios?",
+    "mode": "local",
+    "answer": "Northwind allocates its 2027 engineering budget to Orion reliability and Taiwan expansion. Contoso requires a recovery exercise for Helios before approving Orion expansion. Northwind must coordinate the recovery exercise with Contoso and Fabrikam.\nContoso supplies compliance reviews for Orion. Contoso uses the Helios evidence platform to track audit evidence. A Helios outage delays compliance reviews and can block Orion releases.\nNorthwind sells the Orion analytics service to enterprise customers. Orion depends on Contoso for compliance reviews. Northwind plans to expand Orion into the Taiwan market in 2027.",
+    "citations": [
+      {
+        "id": "doc-8808b6306914858add5610f7-0",
+        "source": "demo://strategy/budget"
+      },
+      {
+        "id": "doc-55933d15beb8cb706df05412-0",
+        "source": "demo://strategy/contoso"
+      },
+      {
+        "id": "doc-934c56e176c7996380688f1e-0",
+        "source": "demo://strategy/northwind"
+      }
+    ],
+    "evidence": [
+      {
+        "id": "doc-8808b6306914858add5610f7-0",
+        "source": "demo://strategy/budget",
+        "text": "Northwind allocates its 2027 engineering budget to Orion reliability and Taiwan expansion. Contoso requires a recovery exercise for Helios before approving Orion expansion. Northwind must coordinate the recovery exercise with Contoso and Fabrikam.",
+        "score": 0.52549386,
+        "kind": "chunk"
+      },
+      {
+        "id": "doc-55933d15beb8cb706df05412-0",
+        "source": "demo://strategy/contoso",
+        "text": "Contoso supplies compliance reviews for Orion. Contoso uses the Helios evidence platform to track audit evidence. A Helios outage delays compliance reviews and can block Orion releases.",
+        "score": 0.35218036,
+        "kind": "chunk"
+      },
+      {
+        "id": "doc-934c56e176c7996380688f1e-0",
+        "source": "demo://strategy/northwind",
+        "text": "Northwind sells the Orion analytics service to enterprise customers. Orion depends on Contoso for compliance reviews. Northwind plans to expand Orion into the Taiwan market in 2027.",
+        "score": 0.3155844,
+        "kind": "chunk"
+      },
+      {
+        "id": "doc-028f3355f42924043f643c9b-0",
+        "source": "demo://strategy/helios",
+        "text": "Helios stores audit evidence in the Taiwan region. Helios has a single storage provider, Fabrikam. Fabrikam maintenance can make Helios unavailable. A second provider is proposed but has not been approved.",
+        "score": 0.29475316,
+        "kind": "chunk"
+      }
+    ],
+    "reflection": {
+      "retrieval": "[Retrieval]",
+      "relevance": "[Relevant]",
+      "support": "[Fully supported]",
+      "utility": 4,
+      "reason": "Deterministic fixture support check.",
+      "accepted": true
+    },
+    "retrievalConfidence": 0.52549386,
+    "usedFallback": false,
+    "attempts": 1,
+    "traceId": "13983eb021713c9591375e94a2e3e170",
+    "warnings": [
+      "Fixture provider and graph store: workflow verification only; not model-quality or Leiden evidence."
+    ]
+  },
+  "global": {
+    "question": "How do Northwind and Contoso depend on Orion and Helios?",
+    "mode": "global",
+    "answer": "[\r\n  {\r\n    \u0022id\u0022: \u0022fixture-community-0\u0022,\r\n    \u0022source\u0022: \u0022community:doc-934c56e176c7996380688f1e-0,doc-55933d15beb8cb706df05412-0,doc-028f3355f42924043f643c9b-0,doc-8808b6306914858add5610f7-0\u0022,\r\n    \u0022text\u0022: \u0022[\\r\\n  {\\r\\n    \\u0022id\\u0022: \\u0022doc-934c56e176c7996380688f1e-0\\u0022,\\r\\n    \\u0022source\\u0022: \\u0022demo://strategy/northwind\\u0022,\\r\\n    \\u0022text\\u0022: \\u0022Northwind sells the Orion analytics service to enterprise customers. Orion depends on Contoso for compliance reviews. Northwind plans to expand Orion into the Taiwan market in 2027.\\u0022,\\r\\n    \\u0022score\\u0022: 1,\\r\\n    \\u0022kind\\u0022: \\u0022chunk\\u0022\\r\\n  },\\r\\n  {\\r\\n    \\u0022id\\u0022: \\u0022doc-55933d15beb8cb706df05412-0\\u0022,\\r\\n    \\u0022source\\u0022: \\u0022demo://strategy/contoso\\u0022,\\r\\n    \\u0022text\\u0022: \\u0022Contoso supplies compliance reviews for Orion. Contoso uses the Helios evidence platform to track audit evidence. A Helios outage delays compliance reviews and can block Orion releases.\\u0022,\\r\\n    \\u0022score\\u0022: 1,\\r\\n    \\u0022kind\\u0022: \\u0022chunk\\u0022\\r\\n  },\\r\\n  {\\r\\n    \\u0022id\\u0022: \\u0022doc-028f3355f42924043f643c9b-0\\u0022,\\r\\n    \\u0022source\\u0022: \\u0022demo://strategy/helios\\u0022,\\r\\n    \\u0022text\\u0022: \\u0022Helios stores audit evidence in the Taiwan region. Helios has a single storage provider, Fabrikam. Fabrikam maintenance can make Helios unavailable. A second provider is proposed but has not been approved.\\u0022,\\r\\n    \\u0022score\\u0022: 1,\\r\\n    \\u0022kind\\u0022: \\u0022chunk\\u0022\\r\\n  },\\r\\n  {\\r\\n    \\u0022id\\u0022: \\u0022doc-8808b6306914858add5610f7-0\\u0022,\\r\\n    \\u0022source\\u0022: \\u0022demo://strategy/budget\\u0022,\\r\\n    \\u0022text\\u0022: \\u0022Northwind allocates its 2027 engineering budget to Orion reliability and Taiwan expansion. Contoso requires a recovery exercise for Helios before approving Orion expansion. Northwind must coordinate the recovery exercise with Contoso and Fabrikam.\\u0022,\\r\\n    \\u0022score\\u0022: 1,\\r\\n    \\u0022kind\\u0022: \\u0022chunk\\u0022\\r\\n  }\\r\\n]\u0022,\r\n    \u0022score\u0022: 1,\r\n    \u0022kind\u0022: \u0022community\u0022\r\n  }\r\n]",
+    "citations": [
+      {
+        "id": "map-3d1aeb74367e1b6ac032e893",
+        "source": "community:doc-934c56e176c7996380688f1e-0,doc-55933d15beb8cb706df05412-0,doc-028f3355f42924043f643c9b-0,doc-8808b6306914858add5610f7-0"
+      }
+    ],
+    "evidence": [
+      {
+        "id": "map-3d1aeb74367e1b6ac032e893",
+        "source": "community:doc-934c56e176c7996380688f1e-0,doc-55933d15beb8cb706df05412-0,doc-028f3355f42924043f643c9b-0,doc-8808b6306914858add5610f7-0",
+        "text": "[\r\n  {\r\n    \u0022id\u0022: \u0022fixture-community-0\u0022,\r\n    \u0022source\u0022: \u0022community:doc-934c56e176c7996380688f1e-0,doc-55933d15beb8cb706df05412-0,doc-028f3355f42924043f643c9b-0,doc-8808b6306914858add5610f7-0\u0022,\r\n    \u0022text\u0022: \u0022[\\r\\n  {\\r\\n    \\u0022id\\u0022: \\u0022doc-934c56e176c7996380688f1e-0\\u0022,\\r\\n    \\u0022source\\u0022: \\u0022demo://strategy/northwind\\u0022,\\r\\n    \\u0022text\\u0022: \\u0022Northwind sells the Orion analytics service to enterprise customers. Orion depends on Contoso for compliance reviews. Northwind plans to expand Orion into the Taiwan market in 2027.\\u0022,\\r\\n    \\u0022score\\u0022: 1,\\r\\n    \\u0022kind\\u0022: \\u0022chunk\\u0022\\r\\n  },\\r\\n  {\\r\\n    \\u0022id\\u0022: \\u0022doc-55933d15beb8cb706df05412-0\\u0022,\\r\\n    \\u0022source\\u0022: \\u0022demo://strategy/contoso\\u0022,\\r\\n    \\u0022text\\u0022: \\u0022Contoso supplies compliance reviews for Orion. Contoso uses the Helios evidence platform to track audit evidence. A Helios outage delays compliance reviews and can block Orion releases.\\u0022,\\r\\n    \\u0022score\\u0022: 1,\\r\\n    \\u0022kind\\u0022: \\u0022chunk\\u0022\\r\\n  },\\r\\n  {\\r\\n    \\u0022id\\u0022: \\u0022doc-028f3355f42924043f643c9b-0\\u0022,\\r\\n    \\u0022source\\u0022: \\u0022demo://strategy/helios\\u0022,\\r\\n    \\u0022text\\u0022: \\u0022Helios stores audit evidence in the Taiwan region. Helios has a single storage provider, Fabrikam. Fabrikam maintenance can make Helios unavailable. A second provider is proposed but has not been approved.\\u0022,\\r\\n    \\u0022score\\u0022: 1,\\r\\n    \\u0022kind\\u0022: \\u0022chunk\\u0022\\r\\n  },\\r\\n  {\\r\\n    \\u0022id\\u0022: \\u0022doc-8808b6306914858add5610f7-0\\u0022,\\r\\n    \\u0022source\\u0022: \\u0022demo://strategy/budget\\u0022,\\r\\n    \\u0022text\\u0022: \\u0022Northwind allocates its 2027 engineering budget to Orion reliability and Taiwan expansion. Contoso requires a recovery exercise for Helios before approving Orion expansion. Northwind must coordinate the recovery exercise with Contoso and Fabrikam.\\u0022,\\r\\n    \\u0022score\\u0022: 1,\\r\\n    \\u0022kind\\u0022: \\u0022chunk\\u0022\\r\\n  }\\r\\n]\u0022,\r\n    \u0022score\u0022: 1,\r\n    \u0022kind\u0022: \u0022community\u0022\r\n  }\r\n]",
+        "score": 1,
+        "kind": "global-map"
+      }
+    ],
+    "reflection": {
+      "retrieval": "[Retrieval]",
+      "relevance": "[Relevant]",
+      "support": "[Fully supported]",
+      "utility": 4,
+      "reason": "Deterministic fixture support check.",
+      "accepted": true
+    },
+    "retrievalConfidence": 0.52549386,
+    "usedFallback": false,
+    "attempts": 1,
+    "traceId": "3ea132f73a9ece1bec558a61e1fffeac",
+    "warnings": [
+      "Fixture provider and graph store: workflow verification only; not model-quality or Leiden evidence."
+    ]
+  },
+  "naive": {
+    "question": "How do Northwind and Contoso depend on Orion and Helios?",
+    "mode": "naive",
+    "answer": "Northwind allocates its 2027 engineering budget to Orion reliability and Taiwan expansion. Contoso requires a recovery exercise for Helios before approving Orion expansion. Northwind must coordinate the recovery exercise with Contoso and Fabrikam.\nContoso supplies compliance reviews for Orion. Contoso uses the Helios evidence platform to track audit evidence. A Helios outage delays compliance reviews and can block Orion releases.\nNorthwind sells the Orion analytics service to enterprise customers. Orion depends on Contoso for compliance reviews. Northwind plans to expand Orion into the Taiwan market in 2027.",
+    "citations": [
+      {
+        "id": "doc-8808b6306914858add5610f7-0",
+        "source": "demo://strategy/budget"
+      },
+      {
+        "id": "doc-55933d15beb8cb706df05412-0",
+        "source": "demo://strategy/contoso"
+      },
+      {
+        "id": "doc-934c56e176c7996380688f1e-0",
+        "source": "demo://strategy/northwind"
+      }
+    ],
+    "evidence": [
+      {
+        "id": "doc-8808b6306914858add5610f7-0",
+        "source": "demo://strategy/budget",
+        "text": "Northwind allocates its 2027 engineering budget to Orion reliability and Taiwan expansion. Contoso requires a recovery exercise for Helios before approving Orion expansion. Northwind must coordinate the recovery exercise with Contoso and Fabrikam.",
+        "score": 0.52549386,
+        "kind": "chunk"
+      },
+      {
+        "id": "doc-55933d15beb8cb706df05412-0",
+        "source": "demo://strategy/contoso",
+        "text": "Contoso supplies compliance reviews for Orion. Contoso uses the Helios evidence platform to track audit evidence. A Helios outage delays compliance reviews and can block Orion releases.",
+        "score": 0.35218036,
+        "kind": "chunk"
+      },
+      {
+        "id": "doc-934c56e176c7996380688f1e-0",
+        "source": "demo://strategy/northwind",
+        "text": "Northwind sells the Orion analytics service to enterprise customers. Orion depends on Contoso for compliance reviews. Northwind plans to expand Orion into the Taiwan market in 2027.",
+        "score": 0.3155844,
+        "kind": "chunk"
+      },
+      {
+        "id": "doc-028f3355f42924043f643c9b-0",
+        "source": "demo://strategy/helios",
+        "text": "Helios stores audit evidence in the Taiwan region. Helios has a single storage provider, Fabrikam. Fabrikam maintenance can make Helios unavailable. A second provider is proposed but has not been approved.",
+        "score": 0.29475316,
+        "kind": "chunk"
+      }
+    ],
+    "reflection": {
+      "retrieval": "[No Retrieval]",
+      "relevance": "[Unchecked]",
+      "support": "[Unchecked]",
+      "utility": 0,
+      "reason": "Naive RAG baseline has no critic.",
+      "accepted": false
+    },
+    "retrievalConfidence": 0.52549386,
+    "usedFallback": false,
+    "attempts": 1,
+    "traceId": "7f981274a199fd5c586350ed99697b08",
+    "warnings": [
+      "Fixture provider and graph store: workflow verification only; not model-quality or Leiden evidence."
+    ]
+  }
+}

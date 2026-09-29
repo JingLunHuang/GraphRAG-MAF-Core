@@ -1,0 +1,10 @@
+.git
+.runtime
+.nuget
+**/bin
+**/obj
+artifacts
+models
+.env
+.env.*
+!.env.example

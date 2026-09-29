@@ -1,0 +1,100 @@
+name: graphrag-maf-core
+services:
+  neo4j:
+    build:
+      context: deploy/neo4j
+      args:
+        GDS_VERSION: 2.13.12
+        GDS_SHA256: d24af9cfe8890dcb1556766aba6c25ac77515f1205da20baabb6eb40088950f9
+    environment:
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:?Run scripts/setup.ps1 or set NEO4J_PASSWORD}
+      NEO4J_server_memory_heap_initial__size: 256m
+      NEO4J_server_memory_heap_max__size: 1g
+      NEO4J_server_memory_pagecache_size: 256m
+      NEO4J_dbms_security_procedures_unrestricted: gds.*
+      NEO4J_dbms_security_procedures_allowlist: gds.*
+    ports:
+      - '127.0.0.1:7474:7474'
+      - '127.0.0.1:7687:7687'
+    volumes:
+      - neo4j-data:/data
+    healthcheck:
+      test: ['CMD-SHELL', 'cypher-shell -u neo4j -p "$${NEO4J_AUTH#*/}" "RETURN gds.version()" >/dev/null 2>&1']
+      interval: 10s
+      timeout: 10s
+      retries: 30
+      start_period: 30s
+  ollama:
+    image: ollama/ollama:0.34.4
+    volumes:
+      - ollama-models:/root/.ollama
+    healthcheck:
+      test: ['CMD', 'ollama', 'list']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  model-init:
+    image: ollama/ollama:0.34.4
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+      CHAT_MODEL: ${CHAT_MODEL:-llama3.2:3b}
+      EMBEDDING_MODEL: ${EMBEDDING_MODEL:-nomic-embed-text}
+    entrypoint: ['/bin/sh', '-c']
+    command: ['ollama pull "$${CHAT_MODEL}" && ollama pull "$${EMBEDDING_MODEL}"']
+  jaeger:
+    image: cr.jaegertracing.io/jaegertracing/jaeger:2.21.0
+    ports:
+      - '127.0.0.1:16686:16686'
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.142.0
+    command: ['--config=/etc/otel/config.yaml']
+    volumes:
+      - ./deploy/otel-collector.yaml:/etc/otel/config.yaml:ro
+    depends_on: [jaeger]
+  prometheus:
+    image: prom/prometheus:v3.8.0
+    command: ['--config.file=/etc/prometheus/prometheus.yml']
+    volumes:
+      - ./deploy/prometheus.yaml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - '127.0.0.1:9090:9090'
+    depends_on: [otel-collector]
+  api:
+    build: .
+    environment:
+      AI_PROVIDER: ${AI_PROVIDER:-ollama}
+      EMBEDDING_PROVIDER: ${EMBEDDING_PROVIDER:-ollama}
+      GRAPH_STORE: neo4j
+      NEO4J_HTTP: http://neo4j:7474/
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD:?Set NEO4J_PASSWORD}
+      OLLAMA_ENDPOINT: http://ollama:11434/
+      CHAT_MODEL: ${CHAT_MODEL:-llama3.2:3b}
+      EMBEDDING_MODEL: ${EMBEDDING_MODEL:-nomic-embed-text}
+      ONNX_CHAT_DIRECTORY: /models/chat
+      ONNX_EMBEDDING_PATH: /models/embedding/model.onnx
+      ONNX_VOCAB_PATH: /models/embedding/vocab.txt
+      AZURE_OPENAI_ENDPOINT: ${AZURE_OPENAI_ENDPOINT:-}
+      AZURE_OPENAI_API_KEY: ${AZURE_OPENAI_API_KEY:-}
+      APP_API_KEY: ${APP_API_KEY:?Set APP_API_KEY}
+      MCP_ENDPOINT: ${MCP_ENDPOINT:-}
+      MCP_SEARCH_TOOL: ${MCP_SEARCH_TOOL:-}
+      TELEMETRY_CAPTURE_CONTENT: ${TELEMETRY_CAPTURE_CONTENT:-false}
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
+    ports:
+      - '127.0.0.1:8080:8080'
+    volumes:
+      - ./models:/models:ro
+    depends_on:
+      neo4j:
+        condition: service_healthy
+      model-init:
+        condition: service_completed_successfully
+      otel-collector:
+        condition: service_started
+    restart: unless-stopped
+volumes:
+  neo4j-data:
+  ollama-models:

@@ -1,0 +1,47 @@
+{
+  "artifactType": "api-mcp-engineering-smoke",
+  "status": "passed",
+  "health": {
+    "status": "ready",
+    "provider": "fixture",
+    "graphStore": "memory",
+    "nativeAot": true,
+    "chunks": 0
+  },
+  "documents": 4,
+  "communities": {
+    "communities": 1,
+    "levels": 1,
+    "gamma": 1,
+    "theta": 0.01,
+    "algorithm": "fixture-connected-components (not Leiden)"
+  },
+  "modes": {
+    "local": {
+      "citations": 3,
+      "accepted": true,
+      "traceId": "0b585a0f437ddbd601cfcbd3dec5f83f"
+    },
+    "global": {
+      "citations": 1,
+      "accepted": true,
+      "traceId": "d6686e42e7fbe2246b28c2bbbe3c1aa6"
+    },
+    "naive": {
+      "citations": 2,
+      "accepted": false,
+      "traceId": "6beefbef7e896e866ca76f56c40d6110"
+    }
+  },
+  "sse": "passed",
+  "concurrentQueries": 16,
+  "mcp": {
+    "protocol": "2025-11-25",
+    "tools": [
+      "rag_query",
+      "rag_ingest",
+      "rag_build_communities"
+    ],
+    "citations": 3
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "question": "What shared strategic risks affect Orion?",
+  "mode": "global",
+  "answer": "Helios, a critical component of Orion, relies on a single storage provider, Fabrikam, which poses a risk during maintenance activities. Additionally, the recovery exercise for Helios must be coordinated with both Northwind and Fabrikam, adding complexity to the expansion process.",
+  "citations": [
+    {
+      "id": "map-a1f871e79abbb6c342710a2b",
+      "source": "community:doc-028f3355f42924043f643c9b-0,doc-8808b6306914858add5610f7-0,doc-934c56e176c7996380688f1e-0;community:doc-55933d15beb8cb706df05412-0,doc-8808b6306914858add5610f7-0,doc-934c56e176c7996380688f1e-0;community:doc-028f3355f42924043f643c9b-0,doc-55933d15beb8cb706df05412-0,doc-8808b6306914858add5610f7-0"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "map-a1f871e79abbb6c342710a2b",
+      "source": "community:doc-028f3355f42924043f643c9b-0,doc-8808b6306914858add5610f7-0,doc-934c56e176c7996380688f1e-0;community:doc-55933d15beb8cb706df05412-0,doc-8808b6306914858add5610f7-0,doc-934c56e176c7996380688f1e-0;community:doc-028f3355f42924043f643c9b-0,doc-55933d15beb8cb706df05412-0,doc-8808b6306914858add5610f7-0",
+      "text": "### Community Report\n\n**Overview:**\nHelios, a critical component of Northwind\u0027s Orion analytics service, is stored in the Taiwan region and relies on a single storage provider, Fabrikam. Contoso supplies compliance reviews for Orion, which is expanding into the Taiwan market in 2027. Northwind has allocated its 2027 engineering budget to improve Orion\u0027s reliability and expand its presence in Taiwan. Before approving the expansion, Contoso requires a recovery exercise for Helios, which must be coordinated with both Northwind and Fabrikam.\n\n**Key Relationships:**\n- **Contoso** supplies compliance reviews for **Orion**.\n- **Northwind** sells **Orion** analytics service to enterprise customers.\n- **Orion** depends on **Contoso** for compliance reviews.\n- **Northwind** plans to expand **Orion** into the **Taiwan** market in 2027.\n- **Northwind** allocates its 2027 engineering budget to **Orion** reliability and **Taiwan** expansion.\n- **Contoso** requires a **Helios** recovery exercise before approving **Orion** expansion.\n- **Helios** outage can delay **compliance reviews** and block **Orion** releases.\n\n**Strategic Themes:**\n1. **Compliance and Audit:** Ensuring compliance through regular reviews.\n2. **Expansion and Reliability:** Planning for and managing expansion into new markets.\n3. **Risk Management:** Mitigating risks associated with technology outages.\n\n**Challenges:**\n- **Single Storage Provider:** Helios\u0027 reliance on Fabrikam for storage poses a risk during maintenance activities.\n- **Coordination Requirements:** The recovery exercise for Helios must be coordinated with Contoso and Fabrikam, adding complexity to the expansion process.\n- **Unapproved Secondary Provider:** Although a secondary provider has been proposed, it has not yet been approved, potentially delaying the Taiwan expansion.\n\n**Gaps:**\n1. **Risk Management:** There is a need for a robust risk management plan to mitigate the impact of Fabrikam\u0027s maintenance on Helios operations.\n2. **Coordination Efforts:** Enhanced coordination mechanisms between Northwind, Contoso, and Fabrikam are required to ensure a smooth recovery exercise and successful expansion.\n3. **Approval Process:** The approval process for the secondary storage provider should be expedited to avoid delays in the Taiwan expansion.\n\n**Evidence IDs:**\n- doc-028f3355f42924043f643c9b-0\n- doc-55933d15beb8cb706df05412-0\n- doc-8808b6306914858add5610f7-0\n- doc-934c56e176c7996380688f1e-0",
+      "score": 1,
+      "kind": "global-map"
+    }
+  ],
+  "reflection": {
+    "retrieval": "[Retrieval]",
+    "relevance": "[Relevant]",
+    "support": "[Fully supported]",
+    "utility": 5,
+    "reason": "The answer directly addresses the shared strategic risks affecting Orion by highlighting the reliance on a single storage provider (Fabrikam) and the need for coordinated recovery exercises, which are both supported by the evidence.",
+    "accepted": true
+  },
+  "retrievalConfidence": 0.45690924,
+  "usedFallback": false,
+  "attempts": 1,
+  "traceId": "b53db73116ea8f9bdbc122a8ceaa912b",
+  "warnings": []
+}

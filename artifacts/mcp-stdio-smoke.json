@@ -1,0 +1,12 @@
+{
+  "artifactType": "mcp-stdio-engineering-smoke",
+  "status": "passed",
+  "protocol": "2025-11-25",
+  "tools": [
+    "rag_query",
+    "rag_ingest",
+    "rag_build_communities"
+  ],
+  "documents": 4,
+  "citations": 3
+}

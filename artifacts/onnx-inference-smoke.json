@@ -1,0 +1,8 @@
+{
+  "artifactType": "real-onnx-int8-inference-smoke",
+  "modelId": "all-MiniLM-L6-v2",
+  "dimensions": 384,
+  "sameTopicCosine": 0.8990442,
+  "differentTopicCosine": 0.0076012784,
+  "status": "passed"
+}
