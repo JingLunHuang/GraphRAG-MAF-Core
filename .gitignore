@@ -11,6 +11,7 @@ artifacts/native/
 artifacts/jit/
 artifacts/test-results/
 artifacts/logs/
+artifacts/*.partial.json
 *.user
 *.suo
 .vs/

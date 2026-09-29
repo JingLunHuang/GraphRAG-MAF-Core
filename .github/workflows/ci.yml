@@ -23,7 +23,8 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y clang zlib1g-dev
       - name: Locked restore and tests
         run: |
-          dotnet restore GraphRag.slnx --locked-mode
+          dotnet restore tests/GraphRag.Tests --locked-mode
+          dotnet restore src/GraphRag.Cli --locked-mode
           dotnet test tests/GraphRag.Tests -c Release --no-restore --logger 'trx;LogFileName=unit-tests.trx' --results-directory artifacts/test-results
       - name: API, CLI and stdio MCP
         run: |
@@ -32,7 +33,8 @@ jobs:
           CLI_DLL=src/GraphRag.Cli/bin/Release/net10.0/GraphRag.Cli.dll node scripts/smoke-mcp-stdio.mjs
       - name: Compile and exercise real Native AOT binary
         run: |
-          dotnet publish src/GraphRag.Api -c Release -r linux-x64 -p:PublishAot=true -p:TrimmerSingleWarn=false -o artifacts/native/linux-x64
+          dotnet restore src/GraphRag.Api -r linux-x64 -p:PublishAot=true --locked-mode
+          dotnet publish src/GraphRag.Api -c Release -r linux-x64 --no-restore -p:PublishAot=true -p:TrimmerSingleWarn=false -o artifacts/native/linux-x64
           bash scripts/ci-native-smoke.sh
       - name: Compose validation
         env:

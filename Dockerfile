@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0.401-noble AS build
 RUN apt-get update && apt-get install -y --no-install-recommends clang zlib1g-dev && rm -rf /var/lib/apt/lists/*
 WORKDIR /src
 COPY . .
-RUN dotnet restore src/GraphRag.Api -r linux-x64
+RUN dotnet restore src/GraphRag.Api -r linux-x64 -p:PublishAot=true --locked-mode
 RUN dotnet publish src/GraphRag.Api -c Release -r linux-x64 --no-restore -p:PublishAot=true -p:TrimmerSingleWarn=false -o /out
 
 FROM ubuntu:24.04 AS runtime

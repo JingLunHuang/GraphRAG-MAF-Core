@@ -98,6 +98,7 @@ public sealed class CoreTests
         Assert.Contains("not Leiden", report.Algorithm);
         AnswerResult result = await service.QueryAsync(new("What is Northwind strategy?", "global"));
         Assert.True(result.Reflection.Accepted);
+        Assert.Contains(result.Evidence, item => item.Kind == "source");
         await service.IngestAsync(new("test://b", "Contoso funds Fabrikam."));
         await Assert.ThrowsAsync<InvalidOperationException>(() => service.QueryAsync(new("Strategy?", "global")));
     }

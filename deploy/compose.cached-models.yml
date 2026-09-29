@@ -1,0 +1,4 @@
+services:
+  ollama:
+    volumes:
+      - ${OLLAMA_HOST_MODELS:?Point to a verified local Ollama models directory}:/root/.ollama/models:ro

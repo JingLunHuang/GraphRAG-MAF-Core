@@ -11,5 +11,6 @@
     <InvariantGlobalization>false</InvariantGlobalization>
     <DefaultItemExcludes>$(DefaultItemExcludes);obj/**;bin/**</DefaultItemExcludes>
     <BaseIntermediateOutputPath Condition="'$(OS)' != 'Windows_NT'">$(MSBuildThisFileDirectory).runtime/linux-obj/$(MSBuildProjectName)/</BaseIntermediateOutputPath>
+    <NuGetLockFilePath Condition="'$(PublishAot)' == 'true'">$(MSBuildProjectDirectory)/packages.aot.lock.json</NuGetLockFilePath>
   </PropertyGroup>
 </Project>

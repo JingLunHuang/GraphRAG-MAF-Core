@@ -8,11 +8,12 @@ namespace GraphRag.Infrastructure;
 public sealed record WireMessage(string Role, string Content);
 public sealed record ChatWireRequest(string Model, WireMessage[] Messages, bool Stream, float? Temperature, int? Max_tokens, StreamWireOptions? Stream_options = null,
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WireResponseFormat? Response_format = null);
-public sealed record WireResponseFormat(string Type = "json_object");
+public sealed record WireResponseFormat(string Type = "json_object", [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WireJsonSchema? Json_schema = null);
+public sealed record WireJsonSchema(string Name, JsonElement Schema, bool Strict = true);
 public sealed record StreamWireOptions(bool Include_usage = true);
 public sealed record EmbeddingWireRequest(string Model, string[] Input);
 public sealed record OllamaChatRequest(string Model, WireMessage[] Messages, bool Stream, OllamaGenerationOptions Options,
-    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? Format = null);
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] JsonElement? Format = null);
 public sealed record OllamaGenerationOptions(float Temperature, int Num_predict);
 public sealed record QueryPayload(string Question, Evidence[] Evidence, string? Feedback);
 public sealed record Neo4jStatement(string Statement, JsonElement Parameters);
@@ -61,6 +62,7 @@ public sealed record OnnxProbeResult(string ArtifactType, string ModelId, int Di
 [JsonSerializable(typeof(EvaluationCase[]))]
 [JsonSerializable(typeof(JudgePayload))]
 [JsonSerializable(typeof(JudgeAssessment))]
+[JsonSerializable(typeof(EvaluationRun[]))]
 [JsonSerializable(typeof(EvaluationReport))]
 [JsonSerializable(typeof(BenchmarkReport))]
 [JsonSerializable(typeof(OnnxProbeResult))]

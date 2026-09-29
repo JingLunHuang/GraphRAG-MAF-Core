@@ -67,11 +67,15 @@ public sealed class RestChatClient(HttpClient http, RestAiSettings settings) : I
     private string Body(IEnumerable<ChatMessage> messages, ChatOptions? options, bool stream)
     {
         WireMessage[] wire = RestProtocol.Messages(messages, options);
-        bool json = options?.ResponseFormat is ChatResponseFormatJson;
+        ChatResponseFormatJson? json = options?.ResponseFormat as ChatResponseFormatJson;
+        JsonElement? schema = json?.Schema;
         return settings.Provider == "ollama"
-            ? JsonSerializer.Serialize(new OllamaChatRequest(settings.ChatModel, wire, stream, new(options?.Temperature ?? 0, options?.MaxOutputTokens ?? 2048), json ? "json" : null), RagJsonContext.Default.OllamaChatRequest)
+            ? JsonSerializer.Serialize(new OllamaChatRequest(settings.ChatModel, wire, stream, new(options?.Temperature ?? 0, options?.MaxOutputTokens ?? 2048),
+                schema ?? (json is null ? null : JsonSerializer.SerializeToElement("json", RagJsonContext.Default.String))), RagJsonContext.Default.OllamaChatRequest)
             : JsonSerializer.Serialize(new ChatWireRequest(settings.ChatModel, wire, stream, options?.Temperature ?? 0, options?.MaxOutputTokens ?? 2048,
-                stream ? new StreamWireOptions() : null, json ? new WireResponseFormat() : null), RagJsonContext.Default.ChatWireRequest);
+                stream ? new StreamWireOptions() : null, json is null ? null : schema is JsonElement structured
+                    ? new WireResponseFormat("json_schema", new WireJsonSchema(json.SchemaName ?? "response", structured))
+                    : new WireResponseFormat()), RagJsonContext.Default.ChatWireRequest);
     }
 
     public async Task<ChatResponse> GetResponseAsync(IEnumerable<ChatMessage> messages, ChatOptions? options = null, CancellationToken cancellationToken = default)

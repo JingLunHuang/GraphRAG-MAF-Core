@@ -40,10 +40,15 @@ services:
         condition: service_healthy
     environment:
       OLLAMA_HOST: http://ollama:11434
+      AI_PROVIDER: ${AI_PROVIDER:-ollama}
+      EMBEDDING_PROVIDER: ${EMBEDDING_PROVIDER:-ollama}
       CHAT_MODEL: ${CHAT_MODEL:-llama3.2:3b}
       EMBEDDING_MODEL: ${EMBEDDING_MODEL:-nomic-embed-text}
     entrypoint: ['/bin/sh', '-c']
-    command: ['ollama pull "$${CHAT_MODEL}" && ollama pull "$${EMBEDDING_MODEL}"']
+    command:
+      - |
+        if [ "$${AI_PROVIDER}" = "ollama" ]; then ollama show "$${CHAT_MODEL}" >/dev/null 2>&1 || ollama pull "$${CHAT_MODEL}"; fi
+        if [ "$${EMBEDDING_PROVIDER}" = "ollama" ]; then ollama show "$${EMBEDDING_MODEL}" >/dev/null 2>&1 || ollama pull "$${EMBEDDING_MODEL}"; fi
   jaeger:
     image: cr.jaegertracing.io/jaegertracing/jaeger:2.21.0
     ports:

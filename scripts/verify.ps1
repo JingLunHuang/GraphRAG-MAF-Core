@@ -6,9 +6,11 @@ if (-not (Test-Path -LiteralPath $dotnetExe)) { $dotnetExe = (Get-Command dotnet
 Push-Location -LiteralPath $workspace
 try {
     $env:DOTNET_CLI_HOME = Join-Path $workspace '.runtime/cli-home'
-    & $dotnetExe restore GraphRag.slnx
+    & $dotnetExe restore tests/GraphRag.Tests --locked-mode
+    if ($LASTEXITCODE -ne 0) { throw 'Test restore failed.' }
+    & $dotnetExe restore src/GraphRag.Cli --locked-mode
     if ($LASTEXITCODE -ne 0) { throw 'Restore failed.' }
-    & $dotnetExe test GraphRag.slnx -c Release --no-restore --logger 'trx;LogFileName=unit-tests.trx' --results-directory artifacts/test-results
+    & $dotnetExe test tests/GraphRag.Tests -c Release --no-restore --logger 'trx;LogFileName=unit-tests.trx' --results-directory artifacts/test-results
     if ($LASTEXITCODE -ne 0) { throw 'Tests failed.' }
     & $dotnetExe run --project src/GraphRag.Cli -c Release --no-restore -- smoke --output artifacts/smoke.json
     if ($LASTEXITCODE -ne 0) { throw 'Workflow smoke failed.' }

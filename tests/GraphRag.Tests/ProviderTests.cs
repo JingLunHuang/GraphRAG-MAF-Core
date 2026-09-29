@@ -46,6 +46,27 @@ public sealed class ProviderTests
     }
 
     [Fact]
+    public async Task OllamaAndAzureForwardAnExplicitJsonSchema()
+    {
+        using JsonDocument schema = JsonDocument.Parse("{\"type\":\"object\",\"properties\":{\"answer\":{\"type\":\"string\"}},\"required\":[\"answer\"]}");
+        ChatOptions options = new() { ResponseFormat = ChatResponseFormat.ForJsonSchema(schema.RootElement.Clone(), "answer_schema") };
+        foreach (string provider in new[] { "ollama", "azure" })
+        {
+            string? body = null;
+            using HttpClient http = new(new Handler(async request =>
+            {
+                body = await request.Content!.ReadAsStringAsync();
+                return Json(provider == "ollama" ? "{\"message\":{\"content\":\"{}\"}}" : "{\"choices\":[{\"message\":{\"content\":\"{}\"}}]}");
+            }));
+            RestChatClient client = new(http, new(provider, new("http://localhost/"), "chat", "embed"));
+            await client.GetResponseAsync([new(ChatRole.User, "Return JSON")], options);
+            using JsonDocument payload = JsonDocument.Parse(body!);
+            JsonElement forwarded = provider == "ollama" ? payload.RootElement.GetProperty("format") : payload.RootElement.GetProperty("response_format").GetProperty("json_schema").GetProperty("schema");
+            Assert.Equal("object", forwarded.GetProperty("type").GetString());
+        }
+    }
+
+    [Fact]
     public async Task OpenAiStreamDeliversTextAndReportedUsage()
     {
         using HttpClient http = new(new Handler(_ => Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)

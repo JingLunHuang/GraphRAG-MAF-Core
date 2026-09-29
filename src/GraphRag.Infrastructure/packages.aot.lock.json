@@ -19,6 +19,12 @@
           "OpenTelemetry.Api": "1.18.0"
         }
       },
+      "Microsoft.DotNet.ILCompiler": {
+        "type": "Direct",
+        "requested": "[10.0.12, )",
+        "resolved": "10.0.12",
+        "contentHash": "AawF393Q+VkdrnrnI1gu612zh5iqpa1AGSvnKCQ3IkMgSKJXIQbO1sXYRgEzOU4f0cPZ6MaCCF29xZSGWlmbuQ=="
+      },
       "Microsoft.ML.OnnxRuntime": {
         "type": "Direct",
         "requested": "[1.30.0, )",
@@ -318,6 +324,41 @@
           "Microsoft.Extensions.AI.Abstractions": "[10.10.1, )",
           "System.Numerics.Tensors": "[10.0.12, )"
         }
+      }
+    },
+    "net10.0/linux-x64": {
+      "Microsoft.DotNet.ILCompiler": {
+        "type": "Direct",
+        "requested": "[10.0.12, )",
+        "resolved": "10.0.12",
+        "contentHash": "AawF393Q+VkdrnrnI1gu612zh5iqpa1AGSvnKCQ3IkMgSKJXIQbO1sXYRgEzOU4f0cPZ6MaCCF29xZSGWlmbuQ==",
+        "dependencies": {
+          "runtime.linux-x64.Microsoft.DotNet.ILCompiler": "10.0.12"
+        }
+      },
+      "Microsoft.ML.OnnxRuntime": {
+        "type": "Direct",
+        "requested": "[1.30.0, )",
+        "resolved": "1.30.0",
+        "contentHash": "RaF3KjPXB/IbNvvrcQtrxS/NZjB9dEHnZQTsdJCLP5Fnn1Jj3LomeqR1mMAoRFKinJ0pIe85PLhLlfGBYqzgWA==",
+        "dependencies": {
+          "Microsoft.ML.OnnxRuntime.Managed": "1.30.0"
+        }
+      },
+      "Microsoft.ML.OnnxRuntimeGenAI": {
+        "type": "Direct",
+        "requested": "[0.17.1, )",
+        "resolved": "0.17.1",
+        "contentHash": "ilVYETKd71LXTiQtFqZ0wI7VS68h2J74J4CB7hO/0tXLeZZg0UshaJ4/tH1KL9N1CT4hocFMzYlH1gQqpmUfGw==",
+        "dependencies": {
+          "Microsoft.ML.OnnxRuntime": "1.30.0",
+          "Microsoft.ML.OnnxRuntimeGenAI.Managed": "0.17.1"
+        }
+      },
+      "runtime.linux-x64.Microsoft.DotNet.ILCompiler": {
+        "type": "Transitive",
+        "resolved": "10.0.12",
+        "contentHash": "wAa+LAE6+Bkd+pEJvGdnQU8PZQRzvhurpQ4hzsOTpRuedIq1kunJcz86xBCBlzsc+QlVdCKVUPzEfB3uYVB7Gw=="
       }
     }
   }

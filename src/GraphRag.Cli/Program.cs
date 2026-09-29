@@ -100,7 +100,14 @@ try
                 string dataset = await File.ReadAllTextAsync(datasetPath, timeout.Token);
                 EvaluationCase[] cases = JsonSerializer.Deserialize(dataset, RagJsonContext.Default.EvaluationCaseArray) ?? throw new JsonException("Missing evaluation cases.");
                 if (cases.Any(c => c.GraphMode == "global")) await service.BuildCommunitiesAsync(options, timeout.Token);
-                EvaluationReport report = await host.Services.GetRequiredService<RagasEvaluator>().EvaluateAsync(service, cases, dataset, timeout.Token);
+                string partialPath = flags.GetValueOrDefault("output", "artifacts/evaluation.json") + ".partial.json";
+                Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(partialPath))!);
+                List<EvaluationRun> completed = [];
+                EvaluationReport report = await host.Services.GetRequiredService<RagasEvaluator>().EvaluateAsync(service, cases, dataset, timeout.Token, run =>
+                {
+                    completed.Add(run);
+                    File.WriteAllText(partialPath, JsonSerializer.Serialize(completed.ToArray(), RagJsonContext.Default.EvaluationRunArray));
+                });
                 json = JsonSerializer.Serialize(report, RagJsonContext.Default.EvaluationReport); break;
             default: throw new ArgumentException("Unknown command.");
         }

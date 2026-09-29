@@ -1,0 +1,206 @@
+{
+  "artifactType": "live-llm-judged-evaluation",
+  "protocol": "ragas-formulas-csharp-v1",
+  "datasetSha256": "577792ccc81d6f34663865dce1f63986e974d9de7b37712fc453d16a68bbf468",
+  "judgeModel": "qwen2.5-coder:7b",
+  "embeddingModel": "all-MiniLM-L6-v2",
+  "createdUtc": "2026-09-29T17:47:08.5856569+00:00",
+  "runs": [
+    {
+      "caseId": "local-01",
+      "mode": "naive",
+      "answer": {
+        "question": "Which organization sells Orion?",
+        "mode": "naive",
+        "answer": "Northwind sells Orion.",
+        "citations": [
+          {
+            "id": "doc-934c56e176c7996380688f1e-0",
+            "source": "demo://strategy/northwind"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "doc-934c56e176c7996380688f1e-0",
+            "source": "demo://strategy/northwind",
+            "text": "Northwind sells the Orion analytics service to enterprise customers. Orion depends on Contoso for compliance reviews. Northwind plans to expand Orion into the Taiwan market in 2027.",
+            "score": 0.61385196,
+            "kind": "chunk"
+          },
+          {
+            "id": "doc-55933d15beb8cb706df05412-0",
+            "source": "demo://strategy/contoso",
+            "text": "Contoso supplies compliance reviews for Orion. Contoso uses the Helios evidence platform to track audit evidence. A Helios outage delays compliance reviews and can block Orion releases.",
+            "score": 0.5101173,
+            "kind": "chunk"
+          },
+          {
+            "id": "doc-8808b6306914858add5610f7-0",
+            "source": "demo://strategy/budget",
+            "text": "Northwind allocates its 2027 engineering budget to Orion reliability and Taiwan expansion. Contoso requires a recovery exercise for Helios before approving Orion expansion. Northwind must coordinate the recovery exercise with Contoso and Fabrikam.",
+            "score": 0.41326314,
+            "kind": "chunk"
+          },
+          {
+            "id": "doc-028f3355f42924043f643c9b-0",
+            "source": "demo://strategy/helios",
+            "text": "Helios stores audit evidence in the Taiwan region. Helios has a single storage provider, Fabrikam. Fabrikam maintenance can make Helios unavailable. A second provider is proposed but has not been approved.",
+            "score": 0.33213603,
+            "kind": "chunk"
+          }
+        ],
+        "reflection": {
+          "retrieval": "[No Retrieval]",
+          "relevance": "[Unchecked]",
+          "support": "[Unchecked]",
+          "utility": 0,
+          "reason": "Naive RAG baseline has no critic.",
+          "accepted": false
+        },
+        "retrievalConfidence": 0.61385196,
+        "usedFallback": false,
+        "attempts": 1,
+        "traceId": "ea91208ddf187ae2ad9282686f913aa2",
+        "warnings": []
+      },
+      "judgment": {
+        "supportedAnswerClaims": [
+          true
+        ],
+        "contextRelevance": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "supportedReferenceClaims": [
+          true
+        ],
+        "generatedQuestions": [
+          "Which company sells Orion analytics services?",
+          "Who is responsible for compliance reviews for Orion?",
+          "What is the plan for expanding Orion into the Taiwan market?"
+        ],
+        "noncommittal": false,
+        "answerCorrect": true,
+        "explanation": "The generated answer \u0027Northwind sells Orion.\u0027 is correct and directly supported by the reference. The first context provides the necessary information, while the other contexts are not relevant to the question."
+      },
+      "scores": {
+        "faithfulness": 1,
+        "answerRelevancy": 0.6793416142463684,
+        "contextPrecision": 1,
+        "contextRecall": 1
+      }
+    },
+    {
+      "caseId": "local-01",
+      "mode": "local",
+      "answer": {
+        "question": "Which organization sells Orion?",
+        "mode": "local",
+        "answer": "Northwind",
+        "citations": [
+          {
+            "id": "doc-934c56e176c7996380688f1e-0",
+            "source": "demo://strategy/northwind"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "doc-934c56e176c7996380688f1e-0",
+            "source": "demo://strategy/northwind",
+            "text": "Northwind sells the Orion analytics service to enterprise customers. Orion depends on Contoso for compliance reviews. Northwind plans to expand Orion into the Taiwan market in 2027.",
+            "score": 0.61385196,
+            "kind": "chunk"
+          },
+          {
+            "id": "doc-55933d15beb8cb706df05412-0",
+            "source": "demo://strategy/contoso",
+            "text": "Contoso supplies compliance reviews for Orion. Contoso uses the Helios evidence platform to track audit evidence. A Helios outage delays compliance reviews and can block Orion releases.",
+            "score": 0.5101173,
+            "kind": "chunk"
+          },
+          {
+            "id": "doc-8808b6306914858add5610f7-0",
+            "source": "demo://strategy/budget",
+            "text": "Northwind allocates its 2027 engineering budget to Orion reliability and Taiwan expansion. Contoso requires a recovery exercise for Helios before approving Orion expansion. Northwind must coordinate the recovery exercise with Contoso and Fabrikam.",
+            "score": 0.41326314,
+            "kind": "chunk"
+          },
+          {
+            "id": "doc-028f3355f42924043f643c9b-0",
+            "source": "demo://strategy/helios",
+            "text": "Helios stores audit evidence in the Taiwan region. Helios has a single storage provider, Fabrikam. Fabrikam maintenance can make Helios unavailable. A second provider is proposed but has not been approved.",
+            "score": 0.33213603,
+            "kind": "chunk"
+          }
+        ],
+        "reflection": {
+          "retrieval": "[Fully supported]",
+          "relevance": "[Relevant]",
+          "support": "[Fully supported]",
+          "utility": 5,
+          "reason": "The answer \u0027Northwind\u0027 is directly supported by the evidence in \u0027doc-934c56e176c7996380688f1e-0\u0027, which states \u0027Northwind sells the Orion analytics service to enterprise customers.\u0027",
+          "accepted": true
+        },
+        "retrievalConfidence": 0.61385196,
+        "usedFallback": false,
+        "attempts": 1,
+        "traceId": "ce9eb2fedb36402e3313a7ffe9b6530f",
+        "warnings": []
+      },
+      "judgment": {
+        "supportedAnswerClaims": [
+          true
+        ],
+        "contextRelevance": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "supportedReferenceClaims": [
+          true
+        ],
+        "generatedQuestions": [
+          "Which company sells Orion analytics services?",
+          "Who is responsible for compliance reviews for Orion?",
+          "Which organization plans to expand Orion into the Taiwan market?"
+        ],
+        "noncommittal": false,
+        "answerCorrect": true,
+        "explanation": "The generated answer \u0027Northwind\u0027 is correct and supported by the first context. The reference also confirms that Northwind sells Orion analytics services. The generated questions are directly answerable from the provided information."
+      },
+      "scores": {
+        "faithfulness": 1,
+        "answerRelevancy": 0.7139866352081299,
+        "contextPrecision": 1,
+        "contextRecall": 1
+      }
+    }
+  ],
+  "aggregates": [
+    {
+      "mode": "naive",
+      "samples": 1,
+      "mean": {
+        "faithfulness": 1,
+        "answerRelevancy": 0.6793416142463684,
+        "contextPrecision": 1,
+        "contextRecall": 1
+      },
+      "judgeAnswerAccuracy": 1
+    },
+    {
+      "mode": "local",
+      "samples": 1,
+      "mean": {
+        "faithfulness": 1,
+        "answerRelevancy": 0.7139866352081299,
+        "contextPrecision": 1,
+        "contextRecall": 1
+      },
+      "judgeAnswerAccuracy": 1
+    }
+  ]
+}

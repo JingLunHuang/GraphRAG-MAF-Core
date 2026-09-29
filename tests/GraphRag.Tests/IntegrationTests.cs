@@ -6,6 +6,7 @@ using GraphRag.Infrastructure;
 using GraphRag.Infrastructure.Mcp;
 using GraphRag.Infrastructure.Providers;
 using GraphRag.Infrastructure.Telemetry;
+using GraphRag.Infrastructure.Evaluation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.AI;
@@ -18,6 +19,23 @@ namespace GraphRag.Tests;
 
 public sealed class IntegrationTests
 {
+    [Fact]
+    public async Task JudgeRepairsWrongContextCountAndPreservesPairedResults()
+    {
+        GraphRagService service = CoreTests.CreateService();
+        await service.InitializeAsync();
+        await service.IngestAsync(new("test://judge", "Northwind sells Orion."));
+        RepairingJudge judge = new();
+        RagasEvaluator evaluator = new(judge, new StubEmbeddings());
+        List<EvaluationRun> progress = [];
+        EvaluationReport report = await evaluator.EvaluateAsync(service,
+            [new EvaluationCase("case-1", "What does Northwind sell?", "Northwind sells Orion.")], "synthetic-dataset", onRun: progress.Add);
+        Assert.Equal(3, judge.Calls);
+        Assert.Equal(2, report.Runs.Length);
+        Assert.Equal(["naive", "local"], report.Runs.Select(r => r.Mode));
+        Assert.Equal(2, progress.Count);
+    }
+
     [Fact]
     public async Task McpFallbackDiscoversAndCallsAnExternalSearchTool()
     {
@@ -88,5 +106,31 @@ public sealed class IntegrationTests
         public Task<ChatResponse> GetResponseAsync(IEnumerable<ChatMessage> messages, ChatOptions? options = null, CancellationToken cancellationToken = default) =>
             Task.FromResult(new ChatResponse(new ChatMessage(ChatRole.Assistant, "response")) { Usage = new UsageDetails { InputTokenCount = 3, OutputTokenCount = 2, TotalTokenCount = 5 } });
         public IAsyncEnumerable<ChatResponseUpdate> GetStreamingResponseAsync(IEnumerable<ChatMessage> messages, ChatOptions? options = null, CancellationToken cancellationToken = default) => throw new NotSupportedException();
+    }
+
+    private sealed class RepairingJudge : IChatClient
+    {
+        public int Calls { get; private set; }
+        public object? GetService(Type serviceType, object? serviceKey = null) => serviceType == typeof(ChatClientMetadata) ? new ChatClientMetadata("test", defaultModelId: "stub-judge") : null;
+        public void Dispose() { }
+        public Task<ChatResponse> GetResponseAsync(IEnumerable<ChatMessage> messages, ChatOptions? options = null, CancellationToken cancellationToken = default)
+        {
+            Calls++;
+            string relevance = Calls == 1 ? "[]" : "[true]";
+            string json = "{\"supportedAnswerClaims\":[true],\"contextRelevance\":" + relevance + ",\"supportedReferenceClaims\":[true],\"generatedQuestions\":[\"q1\",\"q2\",\"q3\"],\"noncommittal\":false,\"answerCorrect\":true,\"explanation\":\"fixture response\"}";
+            return Task.FromResult(new ChatResponse(new ChatMessage(ChatRole.Assistant, json)));
+        }
+        public IAsyncEnumerable<ChatResponseUpdate> GetStreamingResponseAsync(IEnumerable<ChatMessage> messages, ChatOptions? options = null, CancellationToken cancellationToken = default) => throw new NotSupportedException();
+    }
+    private sealed class StubEmbeddings : IEmbeddingGenerator<string, Embedding<float>>
+    {
+        public object? GetService(Type serviceType, object? serviceKey = null) => serviceType == typeof(EmbeddingGeneratorMetadata) ? new EmbeddingGeneratorMetadata("test", defaultModelId: "stub-embeddings") : null;
+        public void Dispose() { }
+        public Task<GeneratedEmbeddings<Embedding<float>>> GenerateAsync(IEnumerable<string> values, EmbeddingGenerationOptions? options = null, CancellationToken cancellationToken = default)
+        {
+            GeneratedEmbeddings<Embedding<float>> result = new();
+            foreach (string _ in values) result.Add(new Embedding<float>(new float[] { 1, 0 }) { ModelId = "stub-embeddings" });
+            return Task.FromResult(result);
+        }
     }
 }
