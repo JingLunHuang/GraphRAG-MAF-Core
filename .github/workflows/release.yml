@@ -7,7 +7,20 @@ permissions:
   contents: read
   packages: write
 jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.401
+      - name: Locked restore and tests
+        run: |
+          dotnet restore tests/GraphRag.Tests --locked-mode
+          dotnet test tests/GraphRag.Tests -c Release --no-restore
   container:
+    needs: validate
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -21,6 +34,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - uses: docker/build-push-action@v7
+        id: publish
         with:
           context: .
           push: true
@@ -29,3 +43,23 @@ jobs:
             ${{ env.IMAGE_NAME }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      - name: Pull and smoke-test published Native AOT image
+        run: |
+          docker pull "$IMAGE_NAME:${GITHUB_REF_NAME}"
+          docker run --detach --name graphrag-cd-smoke --publish 127.0.0.1:18082:8080 \
+            --env AI_PROVIDER=fixture --env EMBEDDING_PROVIDER=fixture --env GRAPH_STORE=memory \
+            "$IMAGE_NAME:${GITHUB_REF_NAME}"
+          trap 'docker rm -f graphrag-cd-smoke >/dev/null 2>&1 || true' EXIT
+          for attempt in $(seq 1 60); do
+            if curl -fs --max-time 2 http://127.0.0.1:18082/health/ready -o /tmp/graphrag-ready.json && \
+              python3 -c 'import json; d=json.load(open("/tmp/graphrag-ready.json")); assert d["nativeAot"] and d["status"] == "ready" and d["graphStore"] == "memory"'; then
+              echo "Published Native AOT image is ready."
+              exit 0
+            fi
+            sleep 1
+          done
+          docker logs graphrag-cd-smoke
+          exit 1
+      - name: Record published image
+        run: |
+          echo "Published \`$IMAGE_NAME:${GITHUB_REF_NAME}\` at digest \`${{ steps.publish.outputs.digest }}\`." >> "$GITHUB_STEP_SUMMARY"
