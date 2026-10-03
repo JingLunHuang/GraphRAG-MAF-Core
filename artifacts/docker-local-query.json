@@ -1,0 +1,58 @@
+{
+  "artifactType": "docker-local-live-query",
+  "durationMs": 155015,
+  "result": {
+    "question": "Who supplies compliance reviews for Orion?",
+    "mode": "local",
+    "answer": "Contoso supplies compliance reviews for Orion.",
+    "citations": [
+      {
+        "id": "doc-55933d15beb8cb706df05412-0",
+        "source": "demo://strategy/contoso"
+      }
+    ],
+    "evidence": [
+      {
+        "id": "doc-55933d15beb8cb706df05412-0",
+        "source": "demo://strategy/contoso",
+        "text": "Contoso supplies compliance reviews for Orion. Contoso uses the Helios evidence platform to track audit evidence. A Helios outage delays compliance reviews and can block Orion releases.",
+        "score": 0.71510804,
+        "kind": "chunk"
+      },
+      {
+        "id": "doc-934c56e176c7996380688f1e-0",
+        "source": "demo://strategy/northwind",
+        "text": "Northwind sells the Orion analytics service to enterprise customers. Orion depends on Contoso for compliance reviews. Northwind plans to expand Orion into the Taiwan market in 2027.",
+        "score": 0.5167635,
+        "kind": "chunk"
+      },
+      {
+        "id": "doc-028f3355f42924043f643c9b-0",
+        "source": "demo://strategy/helios",
+        "text": "Helios stores audit evidence in the Taiwan region. Helios has a single storage provider, Fabrikam. Fabrikam maintenance can make Helios unavailable. A second provider is proposed but has not been approved.",
+        "score": 0.3867006,
+        "kind": "chunk"
+      },
+      {
+        "id": "doc-8808b6306914858add5610f7-0",
+        "source": "demo://strategy/budget",
+        "text": "Northwind allocates its 2027 engineering budget to Orion reliability and Taiwan expansion. Contoso requires a recovery exercise for Helios before approving Orion expansion. Northwind must coordinate the recovery exercise with Contoso and Fabrikam.",
+        "score": 0.71510804,
+        "kind": "graph"
+      }
+    ],
+    "reflection": {
+      "retrieval": "[Retrieval]",
+      "relevance": "[Relevant]",
+      "support": "[Fully supported]",
+      "utility": 5,
+      "reason": "Every factual claim follows from the evidence and citations are valid.",
+      "accepted": true
+    },
+    "retrievalConfidence": 0.71510804,
+    "usedFallback": false,
+    "attempts": 1,
+    "traceId": "54d7be76ccc0dcce055e6a61b432a5f1",
+    "warnings": []
+  }
+}

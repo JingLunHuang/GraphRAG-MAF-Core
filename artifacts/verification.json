@@ -1,0 +1,57 @@
+{
+    "artifactType":  "project-verification",
+    "checkedUtc":  "2026-10-03T14:11:57.1966359Z",
+    "revision":  "394fd2a",
+    "githubCi":  {
+                     "status":  "success",
+                     "url":  "https://github.com/JingLunHuang/GraphRAG-MAF-Core/actions/runs/37102831794",
+                     "testsPassed":  30
+                 },
+    "docker":  {
+                   "nativeAot":  true,
+                   "provider":  "ollama",
+                   "graphStore":  "neo4j",
+                   "chunks":  4,
+                   "liveLocalQuery":  {
+                                          "accepted":  true,
+                                          "support":  "[Fully supported]",
+                                          "citations":  1,
+                                          "traceId":  "54d7be76ccc0dcce055e6a61b432a5f1",
+                                          "durationMs":  155015
+                                      },
+                   "leiden":  {
+                                  "algorithm":  "Neo4j GDS Leiden",
+                                  "levels":  1,
+                                  "communities":  3
+                              },
+                   "globalSmoke":  {
+                                       "status":  "failed",
+                                       "error":  "Error: Global answer lacked accepted, cited evidence."
+                                   }
+               },
+    "observability":  {
+                          "jaegerTraceSpans":  5,
+                          "prometheusLlmCalls":  [
+                                                     {
+                                                         "success":  "true",
+                                                         "count":  19
+                                                     },
+                                                     {
+                                                         "success":  "false",
+                                                         "count":  1
+                                                     }
+                                                 ]
+                      },
+    "otherEvidence":  [
+                          "artifacts/onnx-inference-smoke.json",
+                          "artifacts/neo4j-gds-validation.json",
+                          "artifacts/vector-benchmark.json",
+                          "artifacts/startup-benchmark-linux-fs.json",
+                          "artifacts/evaluation-one.json"
+                      ],
+    "limitations":  [
+                        "The Docker global answer did not pass the critic in this smoke run.",
+                        "The evaluation artifact contains one paired synthetic question; it does not prove general accuracy gains.",
+                        "Azure OpenAI and ONNX chat require external deployments or model weights and are not live-validated."
+                    ]
+}

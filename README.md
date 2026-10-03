@@ -125,12 +125,14 @@ fixture judge 或 fixture embeddings 不能產生品質分數。目前示範集�
 
 ## 五階段交付與技術對照
 
-[30 天規劃對照](docs/phase-delivery.md) 列出每個階段的程式、驗證方式和實際驗證邊界。完整驗證證據將記錄在 `artifacts/verification.json`。
+[30 天規劃對照](docs/phase-delivery.md) 列出每個階段的程式、驗證方式和實際驗證邊界。[驗證總表](artifacts/verification.json) 連結單項量測與目前尚未通過的項目。
 
 目前 SDK 的 MAF 使用 `ChatClientAgent` 搭配 `AgentWorkflowBuilder`；`ChatCompletionAgent` 屬於 Semantic Kernel。GGUF 由 Ollama 執行，ORT GenAI 載入 ONNX GenAI 模型目錄。Self-RAG 反思是 prompted critic，未訓練原論文的 reflection-token checkpoint。C# 評估重現四項 RAGAS 公式與判斷流程，未宣稱等同官方 Python Ragas 的每個版本。[Microsoft MAF](https://learn.microsoft.com/en-us/agent-framework/workflows/workflows)、[ORT C#](https://onnxruntime.ai/docs/genai/api/csharp.html)、[Ragas](https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/)。
 
 ## GitHub
 
-`ci.yml` 執行測試、CLI、MCP、SIMD、Linux Native AOT 編譯及 HTTP/SSE smoke，保留驗證 artifacts。`release.yml` 在 `v*` tag 或手動執行時發布 Native AOT container 至 GHCR。它們已寫入專案；是否在 GitHub 成功執行，需要實際推送及 Actions 結果才能確認。
+`ci.yml` 執行測試、CLI、MCP、SIMD、Linux Native AOT 編譯及 HTTP/SSE smoke，保留驗證 artifacts；[目前提交的 CI 已通過](https://github.com/JingLunHuang/GraphRAG-MAF-Core/actions/runs/37102831794)。`release.yml` 在 `v*` tag 或手動執行時發布 Native AOT container 至 GHCR，該發布流程尚未實測。
+
+Docker 實測的 local 問題已透過 Ollama、ONNX embedding、Neo4j 與多智能體 critic，產生 1 筆來源引用及 `[Fully supported]` 判斷；Jaeger 可依 trace ID 查得追蹤。[實際結果](artifacts/docker-local-query.json)。同一合成語料的 global smoke 在目前容器模型上遭 critic 拒絕，不能宣稱整套問題品質都已通過；詳見[驗證總表](artifacts/verification.json)。
 
 原始碼 MIT 授權；模型、GDS 與容器依各自授權。大型模型、SDK、密鑰、執行檔、暫存資料與資料庫不納入 Git。

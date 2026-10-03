@@ -8,7 +8,7 @@
 | 2：第 6–12 天 | SK entities/relations；Neo4j HTTP transactions；GDS Leiden gamma/theta/seed；多層摘要；TensorPrimitives | 真正 GDS 2.13.12 產生 2 層 5 社群；Release SIMD 4.78–5.64×，kernel 0 managed bytes | fixture 圖只用於離線測試，明確稱為 connected-components，不冒稱 Leiden |
 | 3：第 13–20 天 | 真正 MAF workflow；Researcher/Generator/Critic；反思標記；固定重試與拒答；MCP 發現/search | fixture 模型驅動真實 MAF；citation/retry/cancel；官方 SDK HTTP external-search 整合測試 | 反思是提示式判斷，沒有訓練 Self-RAG checkpoint；live MCP search 需外部 MCP endpoint |
 | 4：第 21–28 天 | bounded Channel.Wait 攝取/串流；OpenInference.NET；Activity/Meter；OTLP；四項 C# 評估 | 30 項測試覆蓋背壓、取消、token usage、不記錄 prompt；Native HTTP/SSE/16 並發；真實 LLM pilot 可重跑 | 16 並發是工程 smoke，不是大量實際 LLM 請求的吞吐基準；合成小樣本不能證明普遍優越 |
-| 5：第 29–30 天 | Dockerfiles；完整 Compose；README measured tables；GitHub CI/GHCR release | Compose parser config 驗證；可執行 Linux Native AOT artifact；測量 JSON 保留 | Docker engine 健康和完整容器部署需實測；GitHub push 需明確 repository URL |
+| 5：第 29–30 天 | Dockerfiles；完整 Compose；README measured tables；GitHub CI/GHCR release workflow | Docker 六個長駐服務已實際啟動；AOT API + Ollama + ONNX + Neo4j 的 local 回答有引用並通過 critic；Jaeger 查得 5 個 spans；GitHub CI 通過 | Docker global smoke 的答案未通過 critic；GHCR 發布流程尚未驗證 |
 
 ## API 與論文對應
 
@@ -26,4 +26,5 @@
 - Azure OpenAI：提供已部署的 chat/embedding 名稱與 endpoint，在使用者配置後重跑，不會從其他專案取得密鑰。
 - ORT GenAI chat：提供與模板相符、授權允許使用的完整量化模型目录；目前已實測的是 ONNX embeddings 與 Ollama GGUF chat。
 - 品質優勢：提供較大、包含 multi-hop/global 問題的獨立標註測試集；保持相同資料、初始檢索 k 與明列 context budget，報告成本、延遲與不確定性。
-- GitHub：指定 repository URL，再推送與觀察 CI/GHCR 產物；本地成功不等同遠端 Actions 已成功。
+- Docker 全域回答：目前合成語料的 local 題已通過，但 global 題在容器模型上被 critic 拒絕；需要檢查中間摘要與草稿，而非把服務健康狀態當作答案品質通過。[目前驗證紀錄](../artifacts/verification.json)。
+- GitHub GHCR：原始碼已推送且 [CI 通過](https://github.com/JingLunHuang/GraphRAG-MAF-Core/actions/runs/37102831794)；`release.yml` 的映像發布仍需獨立驗證。
