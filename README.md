@@ -131,7 +131,7 @@ fixture judge 或 fixture embeddings 不能產生品質分數。目前示範集�
 
 ## GitHub
 
-`ci.yml` 執行測試、CLI、MCP、SIMD、Linux Native AOT 編譯及 HTTP/SSE smoke，保留驗證 artifacts；[目前提交的 CI 已通過](https://github.com/JingLunHuang/GraphRAG-MAF-Core/actions/runs/37102831794)。`release.yml` 在 `v*` tag 或手動執行時發布 Native AOT container 至 GHCR，該發布流程尚未實測。
+`ci.yml` 執行測試、CLI、MCP、SIMD、Linux Native AOT 編譯及 HTTP/SSE smoke，保留驗證 artifacts；[目前程式提交的 CI 已通過](https://github.com/JingLunHuang/GraphRAG-MAF-Core/actions/runs/37129603130)。`release.yml` 在 `v*` tag 或手動執行時先跑鎖定還原與測試，接著發布 Native AOT 容器至 GHCR，再拉回映像啟動並檢查 readiness。手動發布與 [`v0.1.0` 自動發布](https://github.com/JingLunHuang/GraphRAG-MAF-Core/actions/runs/37130092093)均已通過；版本映像是 `ghcr.io/jinglunhuang/graphrag-maf-core:v0.1.0`。這個 GitHub repository 是 private，從其它環境拉取映像需有 GHCR 讀取權限。[CI/CD 驗證紀錄](artifacts/cicd-validation.json)。
 
 Docker 實測的 local 問題已透過 Ollama、ONNX embedding、Neo4j 與多智能體 critic，產生 1 筆來源引用及 `[Fully supported]` 判斷；Jaeger 可依 trace ID 查得追蹤。[實際結果](artifacts/docker-local-query.json)。同一合成語料的 global smoke 在目前容器模型上遭 critic 拒絕，不能宣稱整套問題品質都已通過；詳見[驗證總表](artifacts/verification.json)。
 

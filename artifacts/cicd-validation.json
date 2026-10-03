@@ -1,0 +1,23 @@
+{
+  "artifactType": "github-cicd-validation",
+  "checkedUtc": "2026-10-03T14:37:33Z",
+  "sourceCommit": "b36568acccc554958517c5b68be23b4532fc7c5c",
+  "versionTag": "v0.1.0",
+  "runs": {
+    "mainCi": "https://github.com/JingLunHuang/GraphRAG-MAF-Core/actions/runs/37129603130",
+    "manualCd": "https://github.com/JingLunHuang/GraphRAG-MAF-Core/actions/runs/37129610146",
+    "tagCi": "https://github.com/JingLunHuang/GraphRAG-MAF-Core/actions/runs/37130092101",
+    "tagCd": "https://github.com/JingLunHuang/GraphRAG-MAF-Core/actions/runs/37130092093"
+  },
+  "observedResults": {
+    "mainCi": "success",
+    "manualCd": "success",
+    "tagCi": "success",
+    "tagCd": "success",
+    "releaseTestGate": "passed",
+    "publishedImagePullAndNativeAotReadiness": "passed"
+  },
+  "publishedImage": "ghcr.io/jinglunhuang/graphrag-maf-core:v0.1.0",
+  "publishedDigest": "sha256:b4e06b70c30cc881ebfff3d135f6c9834920c0c5d521cbb81353e9d0bf09be3c",
+  "scope": "The private GHCR container was published, pulled back, and started on a GitHub runner. No separate production host deployment was requested or validated."
+}
