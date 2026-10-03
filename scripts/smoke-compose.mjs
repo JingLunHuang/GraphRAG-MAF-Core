@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import http from 'node:http';
 import path from 'node:path';
 
 const base = (process.env.API_BASE ?? 'http://127.0.0.1:8080').replace(/\/$/, '');
@@ -6,12 +7,19 @@ const key = process.env.APP_API_KEY;
 if (!key) throw new Error('APP_API_KEY must be loaded from the local .env file.');
 
 const output = process.env.SMOKE_OUTPUT ?? 'artifacts/docker-live-smoke.json';
-const report = { artifactType: 'docker-live-integration-smoke', status: 'running', startedAt: new Date().toISOString(), steps: [] };
+const resume = process.argv.includes('--resume');
+const report = resume
+  ? JSON.parse(await fs.readFile(`${output}.partial.json`, 'utf8'))
+  : { artifactType: 'docker-live-integration-smoke', status: 'running', startedAt: new Date().toISOString(), steps: [] };
+report.status = 'running';
+delete report.error;
 async function save() {
   await fs.mkdir(path.dirname(output), { recursive: true });
   await fs.writeFile(`${output}.partial.json`, JSON.stringify(report, null, 2));
 }
 async function step(name, action) {
+  const previous = report.steps.find(item => item.name === name);
+  if (previous) { console.log(`REUSE ${name}`); return previous; }
   const started = performance.now();
   console.log(`START ${name}`);
   const result = await action();
@@ -21,14 +29,26 @@ async function step(name, action) {
   return result;
 }
 async function request(route, body, extraHeaders = {}) {
-  const response = await fetch(`${base}${route}`, {
-    method: body === undefined ? 'GET' : 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-API-Key': key, ...extraHeaders },
-    body: body === undefined ? undefined : JSON.stringify(body),
-    signal: AbortSignal.timeout(600_000)
+  const content = await new Promise((resolve, reject) => {
+    const payload = body === undefined ? undefined : JSON.stringify(body);
+    const request = http.request(new URL(`${base}${route}`), {
+      method: payload === undefined ? 'GET' : 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-API-Key': key, ...extraHeaders }
+    }, response => {
+      const chunks = [];
+      response.on('data', chunk => chunks.push(chunk));
+      response.on('end', () => {
+        const content = Buffer.concat(chunks).toString('utf8');
+        if (response.statusCode < 200 || response.statusCode >= 300)
+          reject(new Error(`${route}: HTTP ${response.statusCode}: ${content.slice(0, 400)}`));
+        else resolve(content);
+      });
+      response.on('error', reject);
+    });
+    request.setTimeout(900_000, () => request.destroy(new Error(`${route}: 15-minute response timeout`)));
+    request.on('error', reject);
+    request.end(payload);
   });
-  const content = await response.text();
-  if (!response.ok) throw new Error(`${route}: HTTP ${response.status}: ${content.slice(0, 400)}`);
   return content;
 }
 function rpcJson(content) {
