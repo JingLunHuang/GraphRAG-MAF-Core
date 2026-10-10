@@ -1,10 +1,55 @@
+# Version control / CI metadata (not needed to build)
 .git
+.gitignore
+.gitattributes
+.github
+
+# IDE / editor state
+.vs
+.vscode
+.idea
+*.user
+*.suo
+
+# Local tool caches and runtime state (never part of the image)
 .runtime
 .nuget
+
+# Build outputs (rebuilt inside the container)
 **/bin
 **/obj
+**/out
 artifacts
+TestResults
+**/*.trx
+**/coverage.*
+
+# Heavy runtime / data directories (mounted at runtime by compose, not baked in)
 models
+data
+
+# Secrets and local env files (compose supplies env at runtime)
 .env
 .env.*
 !.env.example
+
+# Deployment-only assets (used by docker-compose / ops, not by the image build)
+deploy
+docker-compose*.yml
+scripts
+
+# Documentation (not needed for dotnet restore/publish)
+docs
+**/*.md
+!README.md
+!LICENSE
+
+# Node artifacts, if any ever appear
+node_modules
+**/node_modules
+npm-debug.log
+yarn-error.log
+
+# OS noise
+.DS_Store
+Thumbs.db

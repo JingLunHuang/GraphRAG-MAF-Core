@@ -53,3 +53,36 @@ jobs:
         with:
           name: native-linux-x64
           path: artifacts/native/linux-x64/
+  docker-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-buildx-action@v4
+      - uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: false
+          load: true
+          tags: graphrag-api:ci
+          cache-from: type=gha,scope=docker-ci-${{ github.ref_name }}
+          cache-to: type=gha,mode=max,scope=docker-ci-${{ github.ref_name }}
+      - name: Smoke-test built container image
+        env:
+          APP_API_KEY: test
+        run: |
+          docker run --detach --name graphrag-ci-smoke --publish 127.0.0.1:18083:8080 \
+            --env AI_PROVIDER=fixture --env EMBEDDING_PROVIDER=fixture --env GRAPH_STORE=memory \
+            --env APP_API_KEY="$APP_API_KEY" \
+            graphrag-api:ci
+          trap 'docker rm -f graphrag-ci-smoke >/dev/null 2>&1 || true' EXIT
+          for attempt in $(seq 1 60); do
+            if curl -fs --max-time 2 http://127.0.0.1:18083/health/ready -o /tmp/graphrag-ci-ready.json && \
+              python3 -c 'import json; d=json.load(open("/tmp/graphrag-ci-ready.json")); assert d["nativeAot"] and d["status"] == "ready" and d["graphStore"] == "memory"'; then
+              echo "CI-built Native AOT image is ready."
+              exit 0
+            fi
+            sleep 1
+          done
+          docker logs graphrag-ci-smoke
+          exit 1
